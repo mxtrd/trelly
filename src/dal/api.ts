@@ -21,11 +21,18 @@ type GetTaskOutput = {
     data: TaskDetailsData
 }
 
+const prepareHeaders = () => {
+    const apiKey = import.meta.env.VITE_API_KEY
+    if(!apiKey) return undefined
+
+    return {
+        'api-key': apiKey
+    }
+}
+
 export const getTask = (taskId: string, boardId: string) => {
    const promise: Promise<GetTaskOutput> =  fetch(`https://trelly.it-incubator.app/api/1.0/boards/${boardId}/tasks/${taskId}`, {
-        headers: {
-            // 'api-key': '6b4857f1-188f-4fd5-b1ff-69050f87104a'
-        }
+       headers: prepareHeaders()
     }).then(res => res.json())
 
     return promise;
@@ -54,9 +61,7 @@ type GlobalTaskListResponse  = {
 
 export const getTasks = () => {
     const promise: Promise<GlobalTaskListResponse> = fetch('https://trelly.it-incubator.app/api/1.0/boards/tasks', {
-        headers: {
-            // 'api-key': '6b4857f1-188f-4fd5-b1ff-69050f87104a'
-        }
+        headers: prepareHeaders()
     }).then(res => res.json())
 
     return promise;
